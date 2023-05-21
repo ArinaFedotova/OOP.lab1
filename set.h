@@ -11,7 +11,7 @@ class set
 {
 private:
     Type *st;
-    int len;
+    int len = 0;
 public:
     set();                                          //конструктор по умолчанию
     set(const set<Type>&s);                         //конструктор копирования
@@ -42,8 +42,17 @@ public:
     Iterator<Type> iterator_end();                  //метод получения итератора на конец множества (фиктивный элемент, следующий за последним в множестве)
     void clear();                                   //очистить множество
     void resize(int amount);
+    Type &operator[](int index);
 
 };
+
+template<typename Type>
+Type &set<Type>::operator[](int index)
+{
+    if(index < 0 || len <= index)
+        throw set_exeption("Wrong index of m_vector");
+    return *(st + index);
+}
 
 template<typename Type>
 void set<Type>::resize(int len){
@@ -91,9 +100,8 @@ set<Type>::set(std::initializer_list<Type> lst)   //конструктор со 
         if(len < 0)
             throw set_exeption("Bad length of set");
         st = new Type[len]{};
-        int i = 0;
         for(Type item : lst)
-            st[i++] = item;
+            (*st).add(item);
     } catch (std::bad_alloc const&) {
         st = nullptr;
         throw set_exeption("Bad alloc");
@@ -133,8 +141,10 @@ bool set<Type>::contains(const Type& elem)  //проверить наличие 
     bool ans = false;
     Iterator<Type> iter(*this);
     while (!iter.is_end()) {
-        if (iter.value() == elem)
+        if (iter.value() == elem){
             ans = true;
+            break;
+        }
         ++iter;
     }
     return ans;
@@ -164,8 +174,8 @@ void set<Type>::remove(const Type& elem)   //удалить элемент в м
             break;
         }
     }
-    if (st[len] == elem)
-        st[len] = nullptr;
+//    if (st[len] == elem)
+//        *(st + len) = nullptr;
     resize(len);
 }
 
@@ -197,27 +207,28 @@ set<Type>& set<Type>::unionn(const set<Type>& s)    //результат – о�
 template<typename Type>
 set<Type>& set<Type>::intersection(const set<Type>& s)    //результат – пересечение this с s
 {
-    set<Type> iter = new Type[std::min(s.len, get_length())];
-    int length = 0;
-    for (int i = 0; i < s.len(); i++)
-        if (contains(s[i])){
-            iter.add();
-            length++;
-        }
-    iter.resize(length);
-    return iter;
-
-//    set<Type> *s_new = this;
-//    Iterator<Type> iter(*s_new);
-//    while (!iter.is_end()) {
-//        int k = iter.value();
-//        if (s.contains(k) == false) {
-//            remove(iter.current->value);
-//        } else {
-//            ++iter;
+//    set<Type> iter = new Type[std::min(s.len, get_length())];
+//    int length = 0;
+//    for (int i = 0; i < s.len(); i++)
+//        if (contains(s[i])){
+//            iter.add();
+//            length++;
 //        }
-//    }
-//    return *s_new;
+//    iter.resize(length);
+//    return iter;
+
+    set<Type> *s_new = this;
+    Iterator<Type> iter(*s_new);
+    set<Type> s_copy = s;
+    while (!iter.is_end()) {
+        const int k = iter.value();
+        if (!s_copy.contains(k)) {
+            remove(iter.value());
+        } else {
+            ++iter;
+        }
+    }
+    return *s_new;
 }
 
 template<typename Type>
@@ -289,50 +300,24 @@ set<_T> operator +(const set<_T>& s1, const set<_T>& s2)  //перегрузка
     s = set(s1);
     s = s.unionn(s2);
     return s;
-
-//    set<_T> local(s1.len + s2.len);
-//    for(int i = 0; i < s1.len; i++)
-//        local[i] = s1.st[i];
-//    for(int i = 0; i < s2.len; i++)
-//        if (!local.contains(s2.st[i]))
-//            local[s1.len+i] = s2.st[i];
-
-//    return local;
 }
 
 template<typename _T>
 set<_T> operator *(const set<_T>& s1, const set<_T>& s2)    //перегрузка оператора * результат – пересечение множеств s1 и s2
 {
     set<_T> s;
-    s = Set(s1);
+    s = set(s1);
     s = s.intersection(s2);
     return s;
-
-//    set<_T> local(s1.len + s2.len);
-//    for(int i = 0; i < s1.len; i++)
-//        if (s2.contains(s1.st[i]))
-//            local[i] = s1.st[i];
-
-//    return local;
 }
 
 template<typename _T>
 set<_T> operator /(const set<_T>& s1, const set<_T>& s2)    //перегрузка оператора / результат – разность множеств s1 и s2
 {
     set<_T> s;
-    s = Set(s1);
+    s = set(s1);
     s = s.subtract(s2);
     return s;
-
-//    set<_T> local(s1.len + s2.len);
-//    for(int i = 0; i < s1.len; i++)
-//        if (!s2.contains(s1.st[i]))
-//            local[i] = s1.st[i];
-//    for(int i = 0; i < s2.len; i++)
-//        if (!s1.contains(s2.st[i]))
-//            local[i] = s2.st[i];
-
-//    return local;
 }
 
 template<typename Type>
@@ -344,14 +329,19 @@ Iterator<Type> set<Type>::iterator_begin()
 template<typename Type>
 Iterator<Type> set<Type>::iterator_end()
 {
-    return Iterator<Type>(*this, (this->len) - 1);
+    Iterator<Type> it = Iterator<Type>(*this);
+    while(!it.is_end())
+        it.next();
+    return it;
 }
 
 template<typename Type>
 void set<Type>::clear()    //очистить множество
 {
-    st = nullptr;
+    for (int i = 0; i<len; i++)
+        st[i] = nullptr;
     len = 0;
+    st = nullptr;
 }
 
 #endif // SET_H

@@ -50,9 +50,7 @@ Type Iterator<Type>::value()
 template <typename Type>
 bool Iterator<Type>::is_end()
 {
-    if (itr_set_index == itr_set.get_length()-1 || itr_set.get_length() == 0)
-        return true;
-    return false;
+    return (itr_set_index == itr_set.get_length()-1 || itr_set.get_length() == 0);
 }
 
 
