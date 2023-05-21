@@ -24,21 +24,22 @@ void test_add();
 
 
 int main() {
+//    test_iterator();
+//    test_cout();
+//    test_init_list();
+//    test_constructor();
+//    test_transfer();
+//    test_copy();
+//    test_to_array();
+//    test_eq();
+//    test_add();
 
-    test_iterator();
-    test_cout();
-    test_init_list();
-    test_constructor();
-    test_transfer();
-    test_copy();
-    test_to_array();
-    test_eq();
-    test_add();
+    test_multiple_solo();
+//    test_devide_solo();
+
 //    test_multiple();
 //    test_devide();
-    test_plus();
-    test_multiple_solo();
-    test_devide_solo();
+//    test_plus();
 
     return 0;
 }
@@ -84,7 +85,7 @@ void test_cout()
 void test_init_list()
 {
     try {
-        set<int> a{0,1,2,3};
+        set<int> a{0, 0, 0};
         cout << MESSAGE << a << endl;
         set<int> a0{};
         cout << MESSAGE << a0 << endl;
@@ -178,9 +179,6 @@ void test_add()
         set<int> a2{0, 0};
         cout << a2 << endl;
 
-        a2.add(0);
-        cout << a2 << endl;
-
     } catch(set_exeption &e) {
         cout << "Exception says: " << e.what() << endl;
     }
@@ -189,7 +187,7 @@ void test_add()
 void test_devide_solo()
 {
     try {
-        cout<< "Subtract: " << endl;
+        cout << MESSAGE << "Subtract: " << endl;
         set<int> a1{4, 5, 6, 3};
         set<int> a2{4, 6, 7};
         cout << MESSAGE << a1 << endl;
@@ -204,11 +202,19 @@ void test_devide_solo()
 void test_multiple_solo()
 {
     try {
-        cout<< "Intersection: " << endl;
+        cout << MESSAGE << "Intersection: " << endl;
         set<int> a{4,5,6,3};
-        set<int> a3{};
-        set<int> a4 = a3 * a;
-        cout << MESSAGE << a4 << endl;
+
+        set<int> a3{4,8,2,6};
+        set<int> a4 = a * a3;
+        cout << a << " * " << a3 << endl;
+        cout << a4 << endl;
+
+        set<int> a2{};
+        a4 = a2 * a;
+        cout << a << " * " << a2 << endl;
+        cout << a4 << endl;
+
     } catch(set_exeption &e) {
         cout << "Exception says: " << e.what() << endl;
     }

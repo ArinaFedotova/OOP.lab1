@@ -95,13 +95,12 @@ set<Type>::set (set<Type> &&s)  //конструктор перемещения
 template <typename Type>
 set<Type>::set(std::initializer_list<Type> lst)   //конструктор со списком инициализации
 {
-    len = lst.size();
     try {
         if(len < 0)
             throw set_exeption("Bad length of set");
-        st = new Type[len]{};
+        st = new Type[lst.size()]{};
         for(Type item : lst)
-            (*st).add(item);
+            (*this).add(item);
     } catch (std::bad_alloc const&) {
         st = nullptr;
         throw set_exeption("Bad alloc");
@@ -138,6 +137,8 @@ int set<Type>::get_length() const  //получить текущий разме�
 template<typename Type>
 bool set<Type>::contains(const Type& elem)  //проверить наличие в множестве элемента
 {
+    if(this->get_length() == 0)
+        return false;
     bool ans = false;
     Iterator<Type> iter(*this);
     while (!iter.is_end()) {
@@ -147,6 +148,8 @@ bool set<Type>::contains(const Type& elem)  //проверить наличие 
         }
         ++iter;
     }
+    if (iter.value() == elem)
+        ans = true;
     return ans;
 }
 
