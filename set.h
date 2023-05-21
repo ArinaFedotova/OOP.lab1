@@ -137,19 +137,19 @@ int set<Type>::get_length() const  //получить текущий разме�
 template<typename Type>
 bool set<Type>::contains(const Type& elem)  //проверить наличие в множестве элемента
 {
-    if(this->get_length() == 0)
-        return false;
     bool ans = false;
-    Iterator<Type> iter(*this);
-    while (!iter.is_end()) {
-        if (iter.value() == elem){
-            ans = true;
-            break;
+    if(this->get_length() != 0){
+        Iterator<Type> iter(*this);
+        while (!iter.is_end()) {
+            if (iter.value() == elem){
+                ans = true;
+                break;
+            }
+            ++iter;
         }
-        ++iter;
+        if (iter.value() == elem)
+            ans = true;
     }
-    if (iter.value() == elem)
-        ans = true;
     return ans;
 }
 
@@ -168,18 +168,23 @@ void set<Type>::add(const Type& elem)   //добавить элемент в м�
 template<typename Type>
 void set<Type>::remove(const Type& elem)   //удалить элемент в множествe
 {
-    len--;
-    if(len < 0)
+    if(len <= 0)
         throw set_exeption("Bad length for set");
-    for(int i = 0; i < len; i++){
-        if (elem == st[i]){
-            st[i] = st[i+1];
-            break;
+    if ((*this).contains(elem)){
+        len--;
+        bool find_el = false;
+        for(int i = 0; i < len; i++){
+            if (elem == st[i] || find_el){
+                find_el = true;
+                st[i] = st[i+1];
+            }
         }
+        if (find_el)
+            st[len-1] = st[len];
+        else
+            st[len] = nullptr;
+        resize(len);
     }
-//    if (st[len] == elem)
-//        *(st + len) = nullptr;
-    resize(len);
 }
 
 template<typename Type>
@@ -210,22 +215,11 @@ set<Type>& set<Type>::unionn(const set<Type>& s)    //результат – о�
 template<typename Type>
 set<Type>& set<Type>::intersection(const set<Type>& s)    //результат – пересечение this с s
 {
-//    set<Type> iter = new Type[std::min(s.len, get_length())];
-//    int length = 0;
-//    for (int i = 0; i < s.len(); i++)
-//        if (contains(s[i])){
-//            iter.add();
-//            length++;
-//        }
-//    iter.resize(length);
-//    return iter;
-
     set<Type> *s_new = this;
     Iterator<Type> iter(*s_new);
-    set<Type> s_copy = s;
     while (!iter.is_end()) {
         const int k = iter.value();
-        if (!s_copy.contains(k)) {
+        if (!s.contains(k)) {
             remove(iter.value());
         } else {
             ++iter;
@@ -237,17 +231,6 @@ set<Type>& set<Type>::intersection(const set<Type>& s)    //результат �
 template<typename Type>
 set<Type>& set<Type>::subtract(const set<Type>& s)  //результат – разность this и s
 {
-//    set<Type> subt = new Type[*this->len];
-//    subt = unionn(s);
-//    int del_num = 0;
-//    for (Type item : intersection(s))
-//    {
-//        subt.remove(item);
-//        del_num++;
-//    }
-//    subt = new Type[subt.len - del_num]{};
-//    return subt;
-
     set<Type> *s_new = this;
     Iterator<Type> iter(*s_new);
     Iterator<Type> iter_2(s);
