@@ -21,6 +21,8 @@ void test_devide_solo();
 void test_plus();
 
 void test_add();
+void test_contains();
+void test_remove();
 
 
 int main() {
@@ -32,10 +34,11 @@ int main() {
 //    test_copy();
 //    test_to_array();
 //    test_eq();
-//    test_add();
-
+    test_add();
+    test_contains();
+    test_remove();
     test_multiple_solo();
-//    test_devide_solo();
+    test_devide_solo();
 
 //    test_multiple();
 //    test_devide();
@@ -184,21 +187,62 @@ void test_add()
     }
 }
 
+void test_contains()
+{
+    try {
+        set<int> a{4, 5, 6};
+        cout << MESSAGE << a << endl;
+        if (a.contains(4) == true)
+            cout << "Element 4 is in set!" << endl;
+
+        if (a.contains(1) == false)
+            cout << "Element 1 is not in set!" << endl;
+
+    } catch (set_exeption& e) {
+        cout << "Error: " << e.what() << endl;
+    }
+}
+
+
+void test_remove()
+{
+    set<int> a1;
+
+    //a1.remove(1);
+    //cout << MESSAGE << a1 << endl;
+
+    a1.add(1);
+    a1.add(2);
+    a1.add(3);
+    a1.add(4);
+    cout << MESSAGE << a1 << endl;
+
+    a1.remove(4);
+    cout << a1 << endl;
+
+    a1.remove(1);
+    cout << a1 << endl;
+
+    a1.remove(1);
+    cout << "Remove non-existent element: " << endl;
+    cout << a1 << endl;
+}
+
+
 void test_devide_solo()
 {
     try {
         cout << MESSAGE << "Subtract: " << endl;
         set<int> a1{4, 5, 6, 3};
         set<int> a2{4, 6, 7};
-        cout << MESSAGE << a1 << endl;
-        cout << MESSAGE << a2 << endl;
+        cout << a1 << " / " << a2 << endl;
         set<int> a4 = a2 / a1;
-        cout << MESSAGE << a4 << endl;
+        cout << "Result: " << a4 << endl;
     } catch(set_exeption &e) {
         cout << "Exception says: " << e.what() << endl;
     }
 }
-
+/*
 void test_multiple_solo()
 {
     try {
@@ -206,8 +250,9 @@ void test_multiple_solo()
         set<int> a{4,5,6,3};
 
         set<int> a3{4,8,2,6};
-        set<int> a4 = a * a3;
         cout << a << " * " << a3 << endl;
+
+        set<int> a4 = a * a3;
         cout << a4 << endl;
 
         set<int> a2{};
@@ -265,3 +310,4 @@ void test_multiple()
         cout << "Exception says: " << e.what() << endl;
     }
 }
+*/

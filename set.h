@@ -50,7 +50,7 @@ template<typename Type>
 Type &set<Type>::operator[](int index)
 {
     if(index < 0 || len <= index)
-        throw set_exeption("Wrong index of m_vector");
+        throw set_exeption("Wrong index of set");
     return *(st + index);
 }
 
@@ -170,7 +170,7 @@ void set<Type>::remove(const Type& elem)   //удалить элемент в м
 {
     if(len <= 0)
         throw set_exeption("Bad length for set");
-    if ((*this).contains(elem)){
+    if (contains(elem)){
         len--;
         bool find_el = false;
         for(int i = 0; i < len; i++){
@@ -182,7 +182,7 @@ void set<Type>::remove(const Type& elem)   //удалить элемент в м
         if (find_el)
             st[len-1] = st[len];
         else
-            st[len] = nullptr;
+            st[len] = 0;
         resize(len);
     }
 }
@@ -217,12 +217,13 @@ set<Type>& set<Type>::intersection(const set<Type>& s)    //результат �
 {
     set<Type> *s_new = this;
     Iterator<Type> iter(*s_new);
+    Iterator<Type> iter_2(s);
     while (!iter.is_end()) {
-        const int k = iter.value();
-        if (!s.contains(k)) {
-            remove(iter.value());
+        int k = iter_2.value();
+        if (!(*s_new).contains(k)) {
+            (*s_new).remove(k);
         } else {
-            ++iter;
+            ++iter_2;
         }
     }
     return *s_new;
@@ -293,7 +294,7 @@ set<_T> operator *(const set<_T>& s1, const set<_T>& s2)    //перегрузк
 {
     set<_T> s;
     s = set(s1);
-    s = s.intersection(s2);
+    s.intersection(s2);
     return s;
 }
 
@@ -302,7 +303,7 @@ set<_T> operator /(const set<_T>& s1, const set<_T>& s2)    //перегрузк
 {
     set<_T> s;
     s = set(s1);
-    s = s.subtract(s2);
+    s.subtract(s2);
     return s;
 }
 
