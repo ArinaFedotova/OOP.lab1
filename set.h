@@ -199,44 +199,6 @@ Type* set<Type>::to_array()    //создать новый массив, в ко
     return array;
 }
 
-template<typename Type>
-set<Type>& set<Type>::unionn(const set<Type>& s)    //результат – объединение this с s
-{
-    set<Type> *uni = this;
-    Iterator<Type> iter(*uni);
-    Iterator<Type> iter_2(s);
-    while (!(iter.is_end())){
-        (*uni).add(iter.value());
-        ++iter;
-    }
-    return *uni;
-}
-
-template<typename Type>
-set<Type>& set<Type>::intersection(const set<Type>& s)    //результат – пересечение this с s
-{
-    *this = *this * s;
-    return *this;
-}
-
-template<typename Type>
-set<Type>& set<Type>::subtract(const set<Type>& s)  //результат – разность this и s
-{
-    set<Type> *s_new = this;
-    Iterator<Type> iter(*s_new);
-    Iterator<Type> iter_2(s);
-    while (!iter_2.is_end()) {
-        int k = iter_2.value();
-        if ((*s_new).contains(k)) {
-            (*s_new).remove(k);
-        } else {
-            (*s_new).add(k);
-        }
-        ++iter_2;
-    }
-    return *s_new;
-}
-
 template<typename _T>
 std::ostream& operator <<(std::ostream& os, const set<_T>& lst)  //перегрузка оператора <<
 {
@@ -249,70 +211,85 @@ std::ostream& operator <<(std::ostream& os, const set<_T>& lst)  //перегр�
     return os << container;
 }
 
-template<typename Type>
-set<Type>& set<Type>::operator +=(const set<Type>& s)   //перегрузка оператора += результат – объединение множеств this и s
-{
-    *this = *this + s;
-    return *this;
-}
-
-template<typename Type>
-set<Type>& set<Type>::operator *=(const set<Type>& s)   //перегрузка оператора += результат – пересечение множеств this и s
-{
-    *this = *this * s;
-    return *this;
-}
-
-template<typename Type>
-set<Type>& set<Type>::operator /=(const set<Type>& s)   //перегрузка оператора += результат – разность множеств this и s
-{
-    *this = *this / s;
-    return *this;
-}
-
 template<typename _T>
 set<_T> operator +(const set<_T>& s1, const set<_T>& s2)  //перегрузка оператора + результат – объединение множеств s1 и s2
 {
-    set<_T> s;
-    s = set(s1);
-    s = s.unionn(s2);
-    return s;
+    set<_T> s_new;
+    for (int i = 0; i < s1.len; i++)
+        s_new.add(s1.st[i]);
+    for (int i = 0; i < s2.len; i++)
+        s_new.add(s2.st[i]);
+    return s_new;
 }
 
 template<typename _T>
 set<_T> operator *(const set<_T>& s1, const set<_T>& s2)    //перегрузка оператора * результат – пересечение множеств s1 и s2
 {
     set<_T> s_new;
-    Iterator<_T> iter(s1);
-    Iterator<_T> iter_2(s2);
-    while (iter_2.value() != s2[s2.get_length()-1]) {
-        int k = iter_2.value();
-        if (s1.contains(k)) {
-            s_new.add(k);
-        }
-        ++iter_2;
+    for(int i = 0; i < s1.len; i++){
+        for (int j = 0; j < s2.len; j++)
+            if (s2.st[j] == s1.st[i]){
+                s_new.add(s1.st[i]);
+                break;
+            }
     }
-    while (iter.value() != s1[s1.get_length()-1]){
-        int k = iter.value();
-        if (s2.contains(k))
-            s_new.add(k);
-        ++iter;
-    }
-    if (s1.contains(s2[s2.get_length()-1]))
-        s_new.add(s2[s2.get_length()-1]);
-    if (s2.contains(s1[s1.get_length()-1]))
-        s_new.add(s1[s1.get_length()-1]);
-    s_new.add(6);
+
     return s_new;
 }
 
 template<typename _T>
 set<_T> operator /(const set<_T>& s1, const set<_T>& s2)    //перегрузка оператора / результат – разность множеств s1 и s2
 {
-    set<_T> s;
-    s = set(s1);
-    s.subtract(s2);
-    return s;
+    set<_T> s_new;
+    for(int i = 0; i < s1.len; i++){
+        s_new.add(s1.st[i]);
+    }
+    for(int i = 0; i < s2.len; i++){
+        if (s_new.contains(s2.st[i]))
+            s_new.remove(s2.st[i]);
+        else
+            s_new.add(s2.st[i]);
+    }
+    return s_new;
+}
+
+template<typename Type>
+set<Type>& set<Type>::unionn(const set<Type>& s)    //результат – объединение this с s
+{
+    *this = *this + s;
+    return *this;
+}
+
+template<typename Type>
+set<Type>& set<Type>::intersection(const set<Type>& s)    //результат – пересечение this с s
+{
+    *this = *this * s;
+    return *this;
+}
+
+template<typename Type>
+set<Type>& set<Type>::subtract(const set<Type>& s)  //результат – разность this и s
+{
+    *this = *this / s;
+    return *this;
+}
+
+template<typename Type>
+set<Type>& set<Type>::operator +=(const set<Type>& s)   //перегрузка оператора += результат – объединение множеств this и s
+{
+    return *unionn(s);
+}
+
+template<typename Type>
+set<Type>& set<Type>::operator *=(const set<Type>& s)   //перегрузка оператора += результат – пересечение множеств this и s
+{
+    return *intersection(s);
+}
+
+template<typename Type>
+set<Type>& set<Type>::operator /=(const set<Type>& s)   //перегрузка оператора += результат – разность множеств this и s
+{
+    return *subtract(s);
 }
 
 template<typename Type>

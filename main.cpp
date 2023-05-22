@@ -16,8 +16,6 @@ void test_to_array();
 void test_eq();
 void test_multiple();
 void test_devide();
-void test_multiple_solo();
-void test_devide_solo();
 void test_plus();
 
 void test_add();
@@ -26,23 +24,20 @@ void test_remove();
 
 
 int main() {
-//    test_iterator();
-//    test_cout();
-//    test_init_list();
-//    test_constructor();
-//    test_transfer();
-//    test_copy();
-//    test_to_array();
-//    test_eq();
+    test_iterator();
+    test_cout();
+    test_init_list();
+    test_constructor();
+    test_transfer();
+    test_copy();
+    test_to_array();
+    test_eq();
     test_add();
     test_contains();
     test_remove();
-    test_multiple_solo();
-    test_devide_solo();
-
-//    test_multiple();
-//    test_devide();
-//    test_plus();
+    test_multiple();
+    test_devide();
+    test_plus();
 
     return 0;
 }
@@ -52,26 +47,23 @@ void test_iterator()
     try {
         set<int> a{4,5,6,3};
         cout << MESSAGE << "Set: " << endl;
-        cout << a << endl;
+        cout << a << "\n" << endl;
 
         Iterator<int> it = a.iterator_begin();
-        cout << MESSAGE << "Iterator begin: " << endl;
+        cout << "Iterator begin: " << endl;
         cout << it.value() << endl;
-        cout << *it << endl;
-        cout << MESSAGE << "Next elem: " << endl;
-        cout << (++it).value() << endl;
+        cout << *it << "\n" << endl;
+        cout << "Next elem: " << endl;
+        cout << (++it).value() << "\n" << endl;
 
         set<int> a2{4,5,6,3};
         Iterator<int> it2 = a2.iterator_end();
-        cout << MESSAGE << "Iterator end: " << endl;
-        cout << it2.value() << endl;
+        cout << "Iterator end: " << endl;
+        cout << it2.value() << "\n" << endl;
 
-        cout << MESSAGE << "==: " << endl;
-        cout << (*it == *it2) << endl;
-        cout << "!=: " << endl;
-        cout << (*it != *it2) << endl;
+        cout << "==: " << (*it == *it2) << endl;
+        cout << "!=: " << (*it != *it2) << endl;
 
-        cout << MESSAGE << "Move: " << endl;
         set<int> st{};
         set<int> move = std::move(st);
     } catch(set_exeption &e) {
@@ -83,7 +75,8 @@ void test_iterator()
 void test_cout()
 {
     set<int> a{4, 5, 4, 5};
-    cout << a << endl;
+    cout << MESSAGE << a << "\n" << endl;
+    cout << "_________________________________________________________________" << endl;
 }
 
 void test_init_list()
@@ -92,7 +85,7 @@ void test_init_list()
         set<int> a{0, 0, 0};
         cout << MESSAGE << a << endl;
         set<int> a0{};
-        cout << MESSAGE << a0 << endl;
+        cout << a0 << endl;
     } catch(set_exeption &e) {
         cout << "Exception says: " << e.what() << endl;
     }
@@ -145,7 +138,7 @@ void test_to_array()
         cout << a << endl;
         cout << "Array: " << endl;
         for(int i = 0; i < a.get_length(); i++)
-            cout << *(arr + i) << endl;
+            cout << "arr[" << i << "] = " << *(arr + i) << endl;
         delete[] arr;
     } catch(set_exeption &e) {
         cout << "Exception says: " << e.what() << endl;
@@ -158,15 +151,15 @@ void test_eq()
     try {
         set<int> a{4,5,6,3};
         set<int> a2;
+        cout << MESSAGE << a << endl;
+        cout << a2 << endl;
         set<int> a3 = a2;
         set<int> a4 = std::move(a);
-        cout << MESSAGE << a3 << endl;
-        cout << MESSAGE << a4 << endl;
+        cout << "a3 = a2 : \n" << a3 << endl;
+        cout << "a4 = move(a): \n" << a4 << endl;
         set<int> a5{};
         a2 = a5;
-        cout << MESSAGE << a3 << endl;
-        cout << MESSAGE << a << endl;
-        cout << MESSAGE << a5 << endl;
+        cout << "{} = {} : \n" << a2 << endl;
     } catch(set_exeption &e) {
         cout << "Exception says: " << e.what() << endl;
     }
@@ -237,75 +230,27 @@ void test_remove()
 }
 
 
-void test_devide_solo()
-{
-    try {
-        cout << MESSAGE << "Subtract: " << endl;
-        set<int> a1{4, 5, 6, 3};
-        set<int> a2{4, 6, 7};
-        cout << a1 << " / " << a2 << endl;
-        set<int> a4 = a2 / a1;
-        cout << "Result: " << a4 << endl;
-    } catch(set_exeption &e) {
-        cout << "Exception says: " << e.what() << endl;
-    }
-    cout << "_________________________________________________________________" << endl;
-}
-
-void test_multiple_solo()
-{
-    try {
-        cout << MESSAGE << "Intersection: " << endl;
-        set<int> a{4,5,6,3};
-
-        set<int> a3{4,8,2,6};
-        cout << a << " * " << a3 << endl;
-
-        set<int> a4 = a * a3;
-        cout << a4 << endl;
-
-        a4 *= a3;
-        cout << a4 << " * " << a3 << endl;
-        cout << a4 << endl;
-
-        set<int> a2{};
-        a4 = a2 * a;
-        cout << a << " * " << a2 << endl;
-        cout << a4 << endl;
-
-    } catch(set_exeption &e) {
-        cout << "Exception says: " << e.what() << endl;
-    }
-    cout << "_________________________________________________________________" << endl;
-}
-/*
-void test_plus()
-{
-    try {
-        cout << MESSAGE << "Union: " << endl;
-        set<int> a1{4,5,6,3};
-        set<int> a2{4,5,6,3};
-        set<int> a3 = a1 + a2;
-        cout << a3 << endl;
-        set<int> a4{};
-        set<int> a5 = a1 + a4;
-        cout << a5 << endl;
-    } catch(set_exeption &e) {
-        cout << "Exception says: " << e.what() << endl;
-    }
-    cout << "_________________________________________________________________" << endl;
-}
-
 void test_devide()
 {
     try {
-        set<int> a{4,5,6,3};
-        set<int> a2{};
-        a2 /= a;
-        cout << MESSAGE << a2 << endl;
-        set<int> a3{4,5,6,3};
-        a3 /= a2;
-        cout << MESSAGE << a3 << endl;
+        cout << MESSAGE << "Subtract: \n" << endl;
+        set<int> a1{4, 5, 6, 3};
+        set<int> a2{4, 6, 7};
+        cout << a1 << " / " << a2 << endl;
+        set<int> a3 = a2 / a1;
+        cout << "Result: " << a3 << "\n" << endl;
+
+//        set<int> a4{4, 5, 6, 3};
+//        set<int> a5{};
+//        cout << a4 << " / " << a5 << endl;
+//        set<int> a6 = a4 / a5;
+//        cout << "Result: " << a6 << endl;
+
+//        set<int> a7{};
+//        cout << a5 << " / " << a7 << endl;
+//        set<int> a8 = a5 / a7;
+//        cout << "Result: " << a8 << endl;
+
     } catch(set_exeption &e) {
         cout << "Exception says: " << e.what() << endl;
     }
@@ -315,16 +260,54 @@ void test_devide()
 void test_multiple()
 {
     try {
+        cout << MESSAGE << "Intersection: \n" << endl;
         set<int> a{4,5,6,3};
-        set<int> a2{};
-        a2 *= a;
-        cout << MESSAGE << a2 << endl;
-        set<int> a3{4,5,6,3};
-        a3 *= a2;
-        cout << MESSAGE << a3 << endl;
+        set<int> a3{4,2,6};
+        cout << a << " * " << a3 << endl;
+        set<int> a4 = a * a3;
+        cout << "Result: " << a4 << "\n" << endl;
+
+//        cout << a4 << " *= " << a3 << endl;
+//        a4 *= a3;
+//        cout << "Result: " << a4 << endl;
+
+//        set<int> a2{};
+//        a4 = a2 * a;
+//        cout << a << " * " << a2 << endl;
+//        cout << a4 << endl;
+
+//        set<int> a5{};
+//        a4 = a2 * a5;
+//        cout << a2 << " * " << a5 << endl;
+//        cout << a4 << endl;
+
     } catch(set_exeption &e) {
         cout << "Exception says: " << e.what() << endl;
     }
     cout << "_________________________________________________________________" << endl;
 }
-*/
+
+void test_plus()
+{
+    try {
+        cout << MESSAGE << "Union: \n" << endl;
+        set<int> a1{4,5,6,3};
+        set<int> a2{4,5,6,3};
+        cout << a1 << " + " << a2 << endl;
+        set<int> a3 = a1 + a2;
+        cout << "Result: " << a3 << "\n" << endl;
+
+        set<int> a4{1,2,3};
+        cout << a1 << " + " << a4 << endl;
+        a3 = a1 + a4;
+        cout << "Result: " << a3 << endl;
+
+//        cout << a3 << endl;
+//        set<int> a4{};
+//        set<int> a5 = a1 + a4;
+//        cout << a5 << endl;
+    } catch(set_exeption &e) {
+        cout << "Exception says: " << e.what() << endl;
+    }
+    cout << "_________________________________________________________________" << endl;
+}
