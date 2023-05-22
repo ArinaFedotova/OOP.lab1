@@ -41,7 +41,6 @@ public:
     Iterator<Type> iterator_begin();                //метод получения итератора на начало множества (первый элемент)
     Iterator<Type> iterator_end();                  //метод получения итератора на конец множества (фиктивный элемент, следующий за последним в множестве)
     void clear();                                   //очистить множество
-    void resize(int amount);
     Type &operator[](int index);
 
 };
@@ -52,15 +51,6 @@ Type &set<Type>::operator[](int index)
     if(index < 0 || len <= index)
         throw set_exeption("Wrong index of set");
     return *(st + index);
-}
-
-template<typename Type>
-void set<Type>::resize(int len){
-    st = (Type*)realloc(st, sizeof(Type) * len);
-    if (st == nullptr){
-        len = 0;
-        throw set_exeption("Bad alloc!");
-    }
 }
 
 template <typename Type>
@@ -159,7 +149,6 @@ void set<Type>::add(const Type& elem)   //добавить элемент в м�
     if (!contains(elem))
     {
         len++;
-        resize(len);
         st[len-1] = elem;
     }
 
@@ -183,7 +172,6 @@ void set<Type>::remove(const Type& elem)   //удалить элемент в м
             st[len-1] = st[len];
         else
             st[len] = 0;
-        resize(len);
     }
 }
 
