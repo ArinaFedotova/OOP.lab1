@@ -77,6 +77,7 @@ void test_iterator()
     } catch(set_exeption &e) {
         cout << "Exception says: " << e.what() << endl;
     }
+    cout << "_________________________________________________________________" << endl;
 }
 
 void test_cout()
@@ -95,6 +96,7 @@ void test_init_list()
     } catch(set_exeption &e) {
         cout << "Exception says: " << e.what() << endl;
     }
+    cout << "_________________________________________________________________" << endl;
 }
 
 void test_constructor()
@@ -105,6 +107,7 @@ void test_constructor()
     } catch(set_exeption &e) {
         cout << "Exception says: " << e.what() << endl;
     }
+    cout << "_________________________________________________________________" << endl;
 }
 
 void test_transfer()
@@ -116,6 +119,7 @@ void test_transfer()
     } catch(set_exeption &e) {
         cout << "Exception says: " << e.what() << endl;
     }
+    cout << "_________________________________________________________________" << endl;
 }
 
 void test_copy()
@@ -129,6 +133,7 @@ void test_copy()
     } catch(set_exeption &e) {
         cout << "Exception says: " << e.what() << endl;
     }
+    cout << "_________________________________________________________________" << endl;
 }
 
 void test_to_array()
@@ -145,6 +150,7 @@ void test_to_array()
     } catch(set_exeption &e) {
         cout << "Exception says: " << e.what() << endl;
     }
+    cout << "_________________________________________________________________" << endl;
 }
 
 void test_eq()
@@ -164,15 +170,17 @@ void test_eq()
     } catch(set_exeption &e) {
         cout << "Exception says: " << e.what() << endl;
     }
+    cout << "_________________________________________________________________" << endl;
 }
 
 void test_add()
 {
     try {
         set<int> a;
+        cout << MESSAGE << "add elements: " << endl;
+        cout << a << endl;
         a.add(3);
         a.add(2);
-        cout << MESSAGE << "add elements: " << endl;
         cout << a << endl;
 
         a.add(3);
@@ -185,6 +193,7 @@ void test_add()
     } catch(set_exeption &e) {
         cout << "Exception says: " << e.what() << endl;
     }
+    cout << "_________________________________________________________________" << endl;
 }
 
 void test_contains()
@@ -201,15 +210,13 @@ void test_contains()
     } catch (set_exeption& e) {
         cout << "Error: " << e.what() << endl;
     }
+    cout << "_________________________________________________________________" << endl;
 }
 
 
 void test_remove()
 {
     set<int> a1;
-
-    //a1.remove(1);
-    //cout << MESSAGE << a1 << endl;
 
     a1.add(1);
     a1.add(2);
@@ -226,6 +233,7 @@ void test_remove()
     a1.remove(1);
     cout << "Remove non-existent element: " << endl;
     cout << a1 << endl;
+    cout << "_________________________________________________________________" << endl;
 }
 
 
@@ -241,8 +249,9 @@ void test_devide_solo()
     } catch(set_exeption &e) {
         cout << "Exception says: " << e.what() << endl;
     }
+    cout << "_________________________________________________________________" << endl;
 }
-/*
+
 void test_multiple_solo()
 {
     try {
@@ -255,6 +264,10 @@ void test_multiple_solo()
         set<int> a4 = a * a3;
         cout << a4 << endl;
 
+        a4 *= a3;
+        cout << a4 << " * " << a3 << endl;
+        cout << a4 << endl;
+
         set<int> a2{};
         a4 = a2 * a;
         cout << a << " * " << a2 << endl;
@@ -263,8 +276,9 @@ void test_multiple_solo()
     } catch(set_exeption &e) {
         cout << "Exception says: " << e.what() << endl;
     }
+    cout << "_________________________________________________________________" << endl;
 }
-
+/*
 void test_plus()
 {
     try {
@@ -279,6 +293,7 @@ void test_plus()
     } catch(set_exeption &e) {
         cout << "Exception says: " << e.what() << endl;
     }
+    cout << "_________________________________________________________________" << endl;
 }
 
 void test_devide()
@@ -294,6 +309,7 @@ void test_devide()
     } catch(set_exeption &e) {
         cout << "Exception says: " << e.what() << endl;
     }
+    cout << "_________________________________________________________________" << endl;
 }
 
 void test_multiple()
@@ -309,5 +325,6 @@ void test_multiple()
     } catch(set_exeption &e) {
         cout << "Exception says: " << e.what() << endl;
     }
+    cout << "_________________________________________________________________" << endl;
 }
 */

@@ -138,7 +138,7 @@ template<typename Type>
 bool set<Type>::contains(const Type& elem)  //проверить наличие в множестве элемента
 {
     bool ans = false;
-    if(this->get_length() != 0){
+    if((*this).get_length() > 0){
         Iterator<Type> iter(*this);
         while (!iter.is_end()) {
             if (iter.value() == elem){
@@ -215,18 +215,8 @@ set<Type>& set<Type>::unionn(const set<Type>& s)    //результат – о�
 template<typename Type>
 set<Type>& set<Type>::intersection(const set<Type>& s)    //результат – пересечение this с s
 {
-    set<Type> *s_new = this;
-    Iterator<Type> iter(*s_new);
-    Iterator<Type> iter_2(s);
-    while (!iter.is_end()) {
-        int k = iter_2.value();
-        if (!(*s_new).contains(k)) {
-            (*s_new).remove(k);
-        } else {
-            ++iter_2;
-        }
-    }
-    return *s_new;
+    *this = *this * s;
+    return *this;
 }
 
 template<typename Type>
@@ -292,10 +282,28 @@ set<_T> operator +(const set<_T>& s1, const set<_T>& s2)  //перегрузка
 template<typename _T>
 set<_T> operator *(const set<_T>& s1, const set<_T>& s2)    //перегрузка оператора * результат – пересечение множеств s1 и s2
 {
-    set<_T> s;
-    s = set(s1);
-    s.intersection(s2);
-    return s;
+    set<_T> s_new;
+    Iterator<_T> iter(s1);
+    Iterator<_T> iter_2(s2);
+    while (iter_2.value() != s2[s2.get_length()-1]) {
+        int k = iter_2.value();
+        if (s1.contains(k)) {
+            s_new.add(k);
+        }
+        ++iter_2;
+    }
+    while (iter.value() != s1[s1.get_length()-1]){
+        int k = iter.value();
+        if (s2.contains(k))
+            s_new.add(k);
+        ++iter;
+    }
+    if (s1.contains(s2[s2.get_length()-1]))
+        s_new.add(s2[s2.get_length()-1]);
+    if (s2.contains(s1[s1.get_length()-1]))
+        s_new.add(s1[s1.get_length()-1]);
+    s_new.add(6);
+    return s_new;
 }
 
 template<typename _T>
