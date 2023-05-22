@@ -7,12 +7,14 @@ using namespace std;
 
 
 void test_iterator();
+
 void test_cout();
 void test_init_list();
 void test_constructor();
 void test_transfer();
 void test_copy();
 void test_to_array();
+
 void test_eq();
 void test_multiple();
 void test_devide();
@@ -25,6 +27,7 @@ void test_remove();
 
 int main() {
     test_iterator();
+
     test_cout();
     test_init_list();
     test_constructor();
@@ -32,9 +35,11 @@ int main() {
     test_copy();
     test_to_array();
     test_eq();
+
     test_add();
     test_contains();
     test_remove();
+
     test_multiple();
     test_devide();
     test_plus();
@@ -155,8 +160,8 @@ void test_eq()
         cout << a2 << endl;
         set<int> a3 = a2;
         set<int> a4 = std::move(a);
-        cout << "a3 = a2 : \n" << a3 << endl;
-        cout << "a4 = move(a): \n" << a4 << endl;
+        cout << "set = {} : \n" << a3 << endl;
+        cout << "set = move({4,5,6,3}): \n" << a4 << endl;
         set<int> a5{};
         a2 = a5;
         cout << "{} = {} : \n" << a2 << endl;
@@ -240,16 +245,16 @@ void test_devide()
         set<int> a3 = a2 / a1;
         cout << "Result: " << a3 << "\n" << endl;
 
-//        set<int> a4{4, 5, 6, 3};
-//        set<int> a5{};
-//        cout << a4 << " / " << a5 << endl;
-//        set<int> a6 = a4 / a5;
-//        cout << "Result: " << a6 << endl;
+        set<int> a4{4, 5, 6, 3};
+        set<int> a5{};
+        cout << a4 << " / " << a5 << endl;
+        set<int> a6 = a4 / a5;
+        cout << "Result: " << a6 << endl;
 
-//        set<int> a7{};
-//        cout << a5 << " / " << a7 << endl;
-//        set<int> a8 = a5 / a7;
-//        cout << "Result: " << a8 << endl;
+        set<int> a7{};
+        cout << a5 << " / " << a7 << endl;
+        set<int> a8 = a5 / a7;
+        cout << "Result: " << a8 << endl;
 
     } catch(set_exeption &e) {
         cout << "Exception says: " << e.what() << endl;
@@ -267,19 +272,19 @@ void test_multiple()
         set<int> a4 = a * a3;
         cout << "Result: " << a4 << "\n" << endl;
 
+        set<int> a2{};
+        a4 = a2 * a;
+        cout << a << " * " << a2 << endl;
+        cout << "Result: " << a4 << endl;
+
+        set<int> a5{};
+        a4 = a2 * a5;
+        cout << a2 << " * " << a5 << endl;
+        cout << "Result: " << a4 << endl;
+
 //        cout << a4 << " *= " << a3 << endl;
 //        a4 *= a3;
 //        cout << "Result: " << a4 << endl;
-
-//        set<int> a2{};
-//        a4 = a2 * a;
-//        cout << a << " * " << a2 << endl;
-//        cout << a4 << endl;
-
-//        set<int> a5{};
-//        a4 = a2 * a5;
-//        cout << a2 << " * " << a5 << endl;
-//        cout << a4 << endl;
 
     } catch(set_exeption &e) {
         cout << "Exception says: " << e.what() << endl;
@@ -302,10 +307,13 @@ void test_plus()
         a3 = a1 + a4;
         cout << "Result: " << a3 << endl;
 
-//        cout << a3 << endl;
-//        set<int> a4{};
-//        set<int> a5 = a1 + a4;
-//        cout << a5 << endl;
+        cout << a3 << endl;
+        set<int> a5{};
+        cout << a4 << " + " << a5 << endl;
+        set<int> a6 = a4 + a5;
+        cout << "Result: " << a6 << endl;
+
+
     } catch(set_exeption &e) {
         cout << "Exception says: " << e.what() << endl;
     }
