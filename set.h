@@ -41,9 +41,19 @@ public:
     Iterator<Type> iterator_begin();                //метод получения итератора на начало множества (первый элемент)
     Iterator<Type> iterator_end();                  //метод получения итератора на конец множества (фиктивный элемент, следующий за последним в множестве)
     void clear();                                   //очистить множество
+    void resize(int amount);
     Type &operator[](int index);
 
 };
+
+template<typename Type>
+void set<Type>::resize(int len){
+    st = (Type*)realloc(st, sizeof(Type) * len);
+    if (st == nullptr){
+        len = 0;
+        throw set_exeption("Bad alloc!");
+    }
+}
 
 template<typename Type>
 Type &set<Type>::operator[](int index)
@@ -128,17 +138,14 @@ template<typename Type>
 bool set<Type>::contains(const Type& elem)  //проверить наличие в множестве элемента
 {
     bool ans = false;
-    if((*this).get_length() > 0){
-        Iterator<Type> iter(*this);
-        while (!iter.is_end()) {
-            if (iter.value() == elem){
-                ans = true;
-                break;
-            }
-            ++iter;
-        }
-        if (iter.value() == elem)
+    if(len == 0)
+        return false;
+    for(int i = 0; i < len; i++){
+        int k = (*this).st[i];
+        if (k == elem){
             ans = true;
+            break;
+        }
     }
     return ans;
 }
@@ -148,10 +155,10 @@ void set<Type>::add(const Type& elem)   //добавить элемент в м�
 {
     if (!contains(elem))
     {
+        resize(len+1);
+        st[len] = elem;
         len++;
-        st[len-1] = elem;
     }
-
 }
 
 template<typename Type>
@@ -172,6 +179,7 @@ void set<Type>::remove(const Type& elem)   //удалить элемент в м
             st[len-1] = st[len];
         else
             st[len] = 0;
+        resize(len);
     }
 }
 
@@ -299,9 +307,10 @@ template<typename Type>
 void set<Type>::clear()    //очистить множество
 {
     for (int i = 0; i<len; i++)
-        st[i] = nullptr;
+        st[i] = 0;
     len = 0;
     st = nullptr;
 }
+
 
 #endif // SET_H

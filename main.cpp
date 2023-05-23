@@ -15,6 +15,9 @@ void test_transfer();
 void test_copy();
 void test_to_array();
 
+void test_square_brackets();
+void test_clear();
+
 void test_eq();
 void test_multiple();
 void test_devide();
@@ -26,23 +29,25 @@ void test_remove();
 
 
 int main() {
-    test_iterator();
+//    test_iterator();
 
-    test_cout();
-    test_init_list();
-    test_constructor();
-    test_transfer();
+//    test_cout();
+//    test_init_list();
+//    test_constructor();
+//    test_transfer();
     test_copy();
-    test_to_array();
-    test_eq();
+//    test_to_array();
+//    test_eq();
 
-    test_add();
-    test_contains();
-    test_remove();
+//    test_clear();
+//    test_square_brackets();
+//    test_add();
+//    test_contains();
+//    test_remove();
 
-    test_multiple();
-    test_devide();
-    test_plus();
+//    test_multiple();
+//    test_devide();
+//    test_plus();
 
     return 0;
 }
@@ -139,12 +144,37 @@ void test_to_array()
     try {
         set<int> a{4,5,6,3};
         int *arr = a.to_array();
-        cout << a.get_length() << endl;
+        cout << MESSAGE << a.get_length() << endl;
         cout << a << endl;
         cout << "Array: " << endl;
         for(int i = 0; i < a.get_length(); i++)
             cout << "arr[" << i << "] = " << *(arr + i) << endl;
         delete[] arr;
+    } catch(set_exeption &e) {
+        cout << "Exception says: " << e.what() << endl;
+    }
+    cout << "_________________________________________________________________" << endl;
+}
+
+void test_square_brackets()
+{
+    try{
+        set<int> a{1, 2};
+        cout << MESSAGE << a << endl;
+        cout << "Element a[0] = " << a[0] << endl;
+    } catch(set_exeption &e) {
+        cout << "Exception says: " << e.what() << endl;
+    }
+    cout << "_________________________________________________________________" << endl;
+}
+
+void test_clear()
+{
+    try{
+        set<int> a{2, 3};
+        cout << MESSAGE << a << endl;
+        a.clear();
+        cout << "Result: " << a << endl;
     } catch(set_exeption &e) {
         cout << "Exception says: " << e.what() << endl;
     }
@@ -174,7 +204,7 @@ void test_eq()
 void test_add()
 {
     try {
-        set<int> a;
+        set<int> a{0};
         cout << MESSAGE << "add elements: " << endl;
         cout << a << endl;
         a.add(3);
