@@ -273,19 +273,22 @@ set<Type>& set<Type>::subtract(const set<Type>& s)  //результат – р�
 template<typename Type>
 set<Type>& set<Type>::operator +=(const set<Type>& s)   //перегрузка оператора += результат – объединение множеств this и s
 {
-    return *unionn(s);
+    *this = *this + s;
+    return *this;
 }
 
 template<typename Type>
 set<Type>& set<Type>::operator *=(const set<Type>& s)   //перегрузка оператора += результат – пересечение множеств this и s
 {
-    return *intersection(s);
+    *this = *this * s;
+    return *this;
 }
 
 template<typename Type>
 set<Type>& set<Type>::operator /=(const set<Type>& s)   //перегрузка оператора += результат – разность множеств this и s
 {
-    return *subtract(s);
+    *this = *this / s;
+    return *this;
 }
 
 template<typename Type>

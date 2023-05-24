@@ -18,6 +18,10 @@ void test_to_array();
 void test_square_brackets();
 void test_clear();
 
+void test_union();
+void test_inter();
+void test_subtr();
+
 void test_eq();
 void test_multiple();
 void test_devide();
@@ -27,27 +31,30 @@ void test_add();
 void test_contains();
 void test_remove();
 
-
 int main() {
-//    test_iterator();
+    test_iterator();
 
-//    test_cout();
-//    test_init_list();
-//    test_constructor();
-//    test_transfer();
+    test_cout();
+    test_init_list();
+    test_constructor();
+    test_transfer();
     test_copy();
-//    test_to_array();
-//    test_eq();
+    test_to_array();
+    test_eq();
 
-//    test_clear();
-//    test_square_brackets();
-//    test_add();
-//    test_contains();
-//    test_remove();
+    test_clear();
+    test_square_brackets();
+    test_add();
+    test_contains();
+    test_remove();
 
-//    test_multiple();
-//    test_devide();
-//    test_plus();
+    test_union();
+    test_inter();
+    test_subtr();
+
+    test_multiple();
+    test_devide();
+    test_plus();
 
     return 0;
 }
@@ -119,6 +126,9 @@ void test_transfer()
         set<int> a{2, 3, 4};
         set<int> a2 = std::move(a);
         cout << MESSAGE << a2 << endl;
+        set<int> a3;
+        a2 = std::move(a3);
+        cout << MESSAGE << a2 << endl;
     } catch(set_exeption &e) {
         cout << "Exception says: " << e.what() << endl;
     }
@@ -133,6 +143,9 @@ void test_copy()
         a.add(3);
         set<int> a2 = a;
         cout << MESSAGE << a2 << endl;
+        set<int> a3;
+        a2 = a3;
+        cout << MESSAGE << a2 << endl;
     } catch(set_exeption &e) {
         cout << "Exception says: " << e.what() << endl;
     }
@@ -142,12 +155,19 @@ void test_copy()
 void test_to_array()
 {
     try {
-        set<int> a{4,5,6,3};
+        set<int> a{4,5,6,3,4};
         int *arr = a.to_array();
         cout << MESSAGE << a.get_length() << endl;
         cout << a << endl;
         cout << "Array: " << endl;
         for(int i = 0; i < a.get_length(); i++)
+            cout << "arr[" << i << "] = " << *(arr + i) << endl;
+        delete[] arr;
+
+        set<int> a1;
+        arr = a1.to_array();
+        cout << "Array: " << endl;
+        for(int i = 0; i < a1.get_length(); i++)
             cout << "arr[" << i << "] = " << *(arr + i) << endl;
         delete[] arr;
     } catch(set_exeption &e) {
@@ -162,6 +182,7 @@ void test_square_brackets()
         set<int> a{1, 2};
         cout << MESSAGE << a << endl;
         cout << "Element a[0] = " << a[0] << endl;
+        cout << "Element a[-1] = " << a[-1] << endl;
     } catch(set_exeption &e) {
         cout << "Exception says: " << e.what() << endl;
     }
@@ -188,9 +209,9 @@ void test_eq()
         set<int> a2;
         cout << MESSAGE << a << endl;
         cout << a2 << endl;
-        set<int> a3 = a2;
+        set<int> a3 = a;
         set<int> a4 = std::move(a);
-        cout << "set = {} : \n" << a3 << endl;
+        cout << "set = {4,5,6,3} : \n" << a3 << endl;
         cout << "set = move({4,5,6,3}): \n" << a4 << endl;
         set<int> a5{};
         a2 = a5;
@@ -234,6 +255,9 @@ void test_contains()
 
         if (a.contains(1) == false)
             cout << "Element 1 is not in set!" << endl;
+        set<int> a1;
+        if (a1.contains(4) == true)
+            cout << "Element 4 is in set!" << endl;
 
     } catch (set_exeption& e) {
         cout << "Error: " << e.what() << endl;
@@ -264,16 +288,45 @@ void test_remove()
     cout << "_________________________________________________________________" << endl;
 }
 
+void test_union()
+{
+    cout << MESSAGE << "Union: \n" << endl;
+    set<int> a1{4, 5, 6, 3};
+    set<int> a2{4, 6, 7};
+    cout << a2 << " , " << a2 << endl;
+    a2.unionn(a1);
+    cout << "Result: " << a2 << "\n" << endl;
+}
+
+void test_inter()
+{
+    cout << MESSAGE << "Intersection: \n" << endl;
+    set<int> a1{4, 5, 6, 3};
+    set<int> a2{4, 6, 7};
+    cout << a2 << " , " << a2 << endl;
+    a2.intersection(a1);
+    cout << "Result: " << a2 << "\n" << endl;
+}
+
+void test_subtr()
+{
+    cout << MESSAGE << "Subttract: \n" << endl;
+    set<int> a1{4, 5, 6, 3};
+    set<int> a2{4, 6, 7};
+    cout << a2 << " , " << a2 << endl;
+    a1.subtract(a2);
+    cout << "Result: " << a1 << "\n" << endl;
+}
 
 void test_devide()
 {
     try {
-        cout << MESSAGE << "Subtract: \n" << endl;
+        cout << MESSAGE << "Subtract /: \n" << endl;
         set<int> a1{4, 5, 6, 3};
         set<int> a2{4, 6, 7};
         cout << a1 << " / " << a2 << endl;
         set<int> a3 = a2 / a1;
-        cout << "Result: " << a3 << "\n" << endl;
+        cout << "Result: " << a3 << endl;
 
         set<int> a4{4, 5, 6, 3};
         set<int> a5{};
@@ -286,6 +339,10 @@ void test_devide()
         set<int> a8 = a5 / a7;
         cout << "Result: " << a8 << endl;
 
+        cout << a3 << " /= " << a1 << endl;
+        a3 /= a1;
+        cout << "Result: " << a3 << endl;
+
     } catch(set_exeption &e) {
         cout << "Exception says: " << e.what() << endl;
     }
@@ -295,7 +352,7 @@ void test_devide()
 void test_multiple()
 {
     try {
-        cout << MESSAGE << "Intersection: \n" << endl;
+        cout << MESSAGE << "Intersection *: \n" << endl;
         set<int> a{4,5,6,3};
         set<int> a3{4,2,6};
         cout << a << " * " << a3 << endl;
@@ -312,9 +369,9 @@ void test_multiple()
         cout << a2 << " * " << a5 << endl;
         cout << "Result: " << a4 << endl;
 
-//        cout << a4 << " *= " << a3 << endl;
-//        a4 *= a3;
-//        cout << "Result: " << a4 << endl;
+        cout << a << " *= " << a3 << endl;
+        a *= a3;
+        cout << "Result: " << a << endl;
 
     } catch(set_exeption &e) {
         cout << "Exception says: " << e.what() << endl;
@@ -325,7 +382,7 @@ void test_multiple()
 void test_plus()
 {
     try {
-        cout << MESSAGE << "Union: \n" << endl;
+        cout << MESSAGE << "Union +: \n" << endl;
         set<int> a1{4,5,6,3};
         set<int> a2{4,5,6,3};
         cout << a1 << " + " << a2 << endl;
@@ -336,12 +393,16 @@ void test_plus()
         cout << a1 << " + " << a4 << endl;
         a3 = a1 + a4;
         cout << "Result: " << a3 << endl;
-
         cout << a3 << endl;
+
         set<int> a5{};
         cout << a4 << " + " << a5 << endl;
         set<int> a6 = a4 + a5;
         cout << "Result: " << a6 << endl;
+
+        cout << a4 << " += " << a3 << endl;
+        a4 += a3;
+        cout << "Result: " << a4 << endl;
 
 
     } catch(set_exeption &e) {
