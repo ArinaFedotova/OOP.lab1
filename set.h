@@ -24,7 +24,7 @@ public:
     void add(const Type& elem);                     //добавить элемент в множество
     void remove(const Type& elem);                  //удалить элемент в множество
     Type* to_array();                               //создать новый массив, в который необходимо записать все элементы множества
-    set<Type>&unionn(const set<Type>& s);           //результат – объединение this с s
+    set<Type>& unionn(const set<Type>& s);           //результат – объединение this с s
     set<Type>& intersection(const set<Type>& s);    //результат – пересечение this с s
     set<Type>& subtract(const set<Type>& s);        //результат – разность this и s
     template<typename _T>                           //перегрузка оператора <<
@@ -41,10 +41,31 @@ public:
     Iterator<Type> iterator_begin();                //метод получения итератора на начало множества (первый элемент)
     Iterator<Type> iterator_end();                  //метод получения итератора на конец множества (фиктивный элемент, следующий за последним в множестве)
     void clear();                                   //очистить множество
+    bool comp(const Type &r1, const Type &r2);
+    void sort(int (*comp)(const Type &r1, const Type &r2));
     void resize(int amount);
     Type &operator[](int index);
 
 };
+
+template<typename Type>
+int comp(const Type &r1, const Type &r2)
+{
+    return (r1 > r2) ? (1) : (0);
+}
+
+template<typename Type>
+void set<Type>::sort(int (*comp)(const Type &r1, const Type &r2)){
+    int tmp;
+    for (int i = 0; i < len - 1; i++)
+        for (int j = i+1; j < len; j++)
+            if (comp(st[i], st[j])){
+                tmp = st[i];
+                st[i] = st[j];
+                st[j] = tmp;
+            }
+}
+
 
 template<typename Type>
 void set<Type>::resize(int len){
@@ -229,7 +250,6 @@ set<_T> operator *(const set<_T>& s1, const set<_T>& s2)    //перегрузк
                 break;
             }
     }
-
     return s_new;
 }
 
@@ -246,6 +266,7 @@ set<_T> operator /(const set<_T>& s1, const set<_T>& s2)    //перегрузк
         else
             s_new.add(s2.st[i]);
     }
+
     return s_new;
 }
 
@@ -312,7 +333,9 @@ void set<Type>::clear()    //очистить множество
     for (int i = 0; i<len; i++)
         st[i] = 0;
     len = 0;
+    delete []st;
     st = nullptr;
+
 }
 
 

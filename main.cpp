@@ -17,6 +17,7 @@ void test_to_array();
 
 void test_square_brackets();
 void test_clear();
+void test_sort();
 
 void test_union();
 void test_inter();
@@ -32,6 +33,10 @@ void test_contains();
 void test_remove();
 
 int main() {
+    set<int> s (set<int>{1, 2, 3});
+    set<int> s1(s);
+    cout << s << endl;
+
     test_iterator();
 
     test_cout();
@@ -44,6 +49,7 @@ int main() {
 
     test_clear();
     test_square_brackets();
+    test_sort();
     test_add();
     test_contains();
     test_remove();
@@ -76,10 +82,14 @@ void test_iterator()
         set<int> a2{4,5,6,3};
         Iterator<int> it2 = a2.iterator_end();
         cout << "Iterator end: " << endl;
+
         cout << it2.value() << "\n" << endl;
 
         cout << "==: " << (*it == *it2) << endl;
         cout << "!=: " << (*it != *it2) << endl;
+
+        while(!it.is_end())
+            it.next();
 
         set<int> st{};
         set<int> move = std::move(st);
@@ -196,6 +206,28 @@ void test_clear()
         cout << MESSAGE << a << endl;
         a.clear();
         cout << "Result: " << a << endl;
+
+        cout << a << endl;
+        a.clear();
+        cout << "Result: " << a << endl;
+    } catch(set_exeption &e) {
+        cout << "Exception says: " << e.what() << endl;
+    }
+    cout << "_________________________________________________________________" << endl;
+}
+
+void test_sort()
+{
+    try{
+        set<int> a{3, 3, 2, 1, 4};
+        cout << MESSAGE << a << endl;
+        a.sort(comp);
+        cout << "Result: " << a << endl;
+
+        set<int> a1;
+        cout << a1 << endl;
+        a1.sort(comp);
+        cout << "Result: " << a1 << endl;
     } catch(set_exeption &e) {
         cout << "Exception says: " << e.what() << endl;
     }
@@ -216,6 +248,8 @@ void test_eq()
         set<int> a5{};
         a2 = a5;
         cout << "{} = {} : \n" << a2 << endl;
+        set<int> a6 = std::move(a5);
+        cout << "set {} = move({}): \n" << a6 << endl;
     } catch(set_exeption &e) {
         cout << "Exception says: " << e.what() << endl;
     }
@@ -293,7 +327,7 @@ void test_union()
     cout << MESSAGE << "Union: \n" << endl;
     set<int> a1{4, 5, 6, 3};
     set<int> a2{4, 6, 7};
-    cout << a2 << " , " << a2 << endl;
+    cout << a1 << " , " << a2 << endl;
     a2.unionn(a1);
     cout << "Result: " << a2 << "\n" << endl;
 }
@@ -303,7 +337,7 @@ void test_inter()
     cout << MESSAGE << "Intersection: \n" << endl;
     set<int> a1{4, 5, 6, 3};
     set<int> a2{4, 6, 7};
-    cout << a2 << " , " << a2 << endl;
+    cout << a1 << " , " << a2 << endl;
     a2.intersection(a1);
     cout << "Result: " << a2 << "\n" << endl;
 }
@@ -313,7 +347,7 @@ void test_subtr()
     cout << MESSAGE << "Subttract: \n" << endl;
     set<int> a1{4, 5, 6, 3};
     set<int> a2{4, 6, 7};
-    cout << a2 << " , " << a2 << endl;
+    cout << a1 << " , " << a2 << endl;
     a1.subtract(a2);
     cout << "Result: " << a1 << "\n" << endl;
 }
@@ -399,6 +433,11 @@ void test_plus()
         cout << a4 << " + " << a5 << endl;
         set<int> a6 = a4 + a5;
         cout << "Result: " << a6 << endl;
+
+        set<int> a7{};
+        cout << a5 << " + " << a7 << endl;
+        set<int> a8 = a7 + a5;
+        cout << "Result: " << a8 << endl;
 
         cout << a4 << " += " << a3 << endl;
         a4 += a3;

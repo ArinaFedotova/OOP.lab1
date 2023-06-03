@@ -15,14 +15,14 @@ private:
     set<Type> itr_set;
     int itr_set_index = -1;
 public:
-    Iterator(set<Type> container_obj);
-    Iterator next();
-    Type value();
-    bool is_end();
-    Iterator &operator ++ ();
-    Type &operator * ();
-    bool operator == (Iterator &b);
-    bool operator != (Iterator &b);
+    Iterator(set<Type> container_obj);  //конструктор, принимающий объект контейнерного класса, который необходимо обойти с помощью данного итератора
+    Iterator next();                    //перейти к следующему объекту в контейнере
+    Type value();                       //получить значение текущего объекта в контейнере
+    bool is_end();                      //указывает ли итератор на конечный фиктивный элемент контейнера
+    Iterator &operator ++ ();           //префиксный инкремент, эквивалентен next()
+    Type &operator * ();                //оператор разыменования, эквивалентен value()
+    bool operator == (Iterator &b);     //оператор сравнения
+    bool operator != (Iterator &b);     //оператор сравнения
 };
 
 template <typename Type>
@@ -64,21 +64,21 @@ Iterator<Type>& Iterator<Type>::operator++()
 template <typename Type>
 Type &Iterator<Type>::operator*()
 {
-    return itr_set[itr_set_index];
+    return (*this).value();
 }
 
 
 template <typename Type>
 bool Iterator<Type>::operator == (Iterator &b)
 {
-    return (itr_set_index == b.itr_set_index) && (itr_set[itr_set_index] == b.itr_set[itr_set_index]);
+    return (&itr_set + itr_set_index) == (&(b.itr_set) + b.itr_set_index);
 }
 
 
 template <typename Type>
 bool Iterator<Type>::operator != (Iterator &b)
 {
-    return (itr_set_index != b.itr_set_index) && (itr_set[itr_set_index] != b.itr_set[itr_set_index]);
+    return !(*this == b);
 }
 
 #endif // ITERATOR_H
